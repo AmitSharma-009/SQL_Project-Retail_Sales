@@ -1,39 +1,37 @@
-# Retail Sales Analysis SQL Project
+# SQL Project Retail Sales
 
 ## Project Overview
 
-**Project Title**: Retail Sales Analysis  
-**Level**: Beginner  
-**Database**: `p1_retail_db`
+**Project Title**: Retail Sales
+**Database**: `retail_db`
 
-This project is designed to demonstrate SQL skills and techniques typically used by data analysts to explore, clean, and analyze retail sales data. The project involves setting up a retail sales database, performing exploratory data analysis (EDA), and answering specific business questions through SQL queries. This project is ideal for those who are starting their journey in data analysis and want to build a solid foundation in SQL.
-
+I’m working on a project highlighting SQL expertise by tackling retail data. The objective is to set up a sales database, explore the data through EDA, and clean it as needed. I’ll write SQL queries to analyze trends, answer specific business-related questions, and provide insights to improve decision-making. This project will help showcase my ability to work with complex datasets and extract meaningful insights using SQL.
 ## Objectives
 
-1. **Set up a retail sales database**: Create and populate a retail sales database with the provided sales data.
-2. **Data Cleaning**: Identify and remove any records with missing or null values.
-3. **Exploratory Data Analysis (EDA)**: Perform basic exploratory data analysis to understand the dataset.
-4. **Business Analysis**: Use SQL to answer specific business questions and derive insights from the sales data.
-
+1. **Build a retail sales database**: Create and populate the database with the provided sales data to establish a foundation for analysis.
+2. **Clean the Data**: Identify and remove missing or null records to ensure data consistency and accuracy.
+3. **Conduct Exploratory Data Analysis (EDA)**: Perform EDA using SQL to gain a basic understanding of the dataset, uncover patterns, and detect anomalies.
+4. **Perform Business Analysis**: Utilize SQL queries to address key business questions, extract insights, and provide actionable recommendations based on sales 
+                                  performance and trends.
 ## Project Structure
 
 ### 1. Database Setup
 
-- **Database Creation**: The project starts by creating a database named `p1_retail_db`.
-- **Table Creation**: A table named `retail_sales` is created to store the sales data. The table structure includes columns for transaction ID, sale date, sale time, customer ID, gender, age, product category, quantity sold, price per unit, cost of goods sold (COGS), and total sale amount.
+- **Database Setup**: The project kicks off by setting up a database named  `retail_db`.
+- **Table Creation**: A table named `retail01` is designed to store essential sales data. The table structure includes columns that capture the key details of each transaction. (transaction ID, sale date, sale time, customer ID, gender, age, product category, quantity sold, price per unit, cost of goods sold (COGS), and total sale amount).
 
 ```sql
-CREATE DATABASE p1_retail_db;
+CREATE DATABASE retail_db;
 
-CREATE TABLE retail_sales
+CREATE TABLE retail01
 (
     transactions_id INT PRIMARY KEY,
     sale_date DATE,	
     sale_time TIME,
     customer_id INT,	
-    gender VARCHAR(10),
+    gender VARCHAR(20),
     age INT,
-    category VARCHAR(35),
+    category VARCHAR(40),
     quantity INT,
     price_per_unit FLOAT,	
     cogs FLOAT,
@@ -43,23 +41,23 @@ CREATE TABLE retail_sales
 
 ### 2. Data Exploration & Cleaning
 
-- **Record Count**: Determine the total number of records in the dataset.
-- **Customer Count**: Find out how many unique customers are in the dataset.
-- **Category Count**: Identify all unique product categories in the dataset.
-- **Null Value Check**: Check for any null values in the dataset and delete records with missing data.
+- **Record Count**: Calculate the total number of entries available in the dataset to understand the dataset size.
+- **Customer Count**: Identify the number of distinct customers by counting unique customer IDs to assess the customer base.
+- **Category Count**: List all unique product categories to determine the range of products represented in the data 
+- **Null Value Check**: Scan for any missing or null values in the dataset and remove incomplete records to ensure data quality.
 
 ```sql
-SELECT COUNT(*) FROM retail_sales;
-SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
-SELECT DISTINCT category FROM retail_sales;
+SELECT COUNT(*) FROM retail01;
+SELECT COUNT(DISTINCT customer_id) FROM retail01;
+SELECT DISTINCT category FROM retail01;
 
-SELECT * FROM retail_sales
+SELECT * FROM retail01
 WHERE 
     sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
     gender IS NULL OR age IS NULL OR category IS NULL OR 
     quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
 
-DELETE FROM retail_sales
+DELETE FROM retail01
 WHERE 
     sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
     gender IS NULL OR age IS NULL OR category IS NULL OR 
@@ -72,16 +70,13 @@ The following SQL queries were developed to answer specific business questions:
 
 1. **Write a SQL query to retrieve all columns for sales made on '2022-11-05**:
 ```sql
-SELECT *
-FROM retail_sales
+SELECT * FROM retail01
 WHERE sale_date = '2022-11-05';
 ```
 
 2. **Write a SQL query to retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 4 in the month of Nov-2022**:
 ```sql
-SELECT 
-  *
-FROM retail_sales
+SELECT * FROM retail01
 WHERE 
     category = 'Clothing'
     AND 
@@ -92,11 +87,10 @@ WHERE
 
 3. **Write a SQL query to calculate the total sales (total_sale) for each category.**:
 ```sql
-SELECT 
-    category,
+SELECT category,
     SUM(total_sale) as net_sale,
     COUNT(*) as total_orders
-FROM retail_sales
+FROM retail01
 GROUP BY 1
 ```
 
@@ -104,13 +98,13 @@ GROUP BY 1
 ```sql
 SELECT
     ROUND(AVG(age), 2) as avg_age
-FROM retail_sales
+FROM retail01
 WHERE category = 'Beauty'
 ```
 
 5. **Write a SQL query to find all transactions where the total_sale is greater than 1000.**:
 ```sql
-SELECT * FROM retail_sales
+SELECT * FROM retail01
 WHERE total_sale > 1000
 ```
 
@@ -120,7 +114,7 @@ SELECT
     category,
     gender,
     COUNT(*) as total_trans
-FROM retail_sales
+FROM retail01
 GROUP 
     BY 
     category,
@@ -141,7 +135,7 @@ SELECT
     EXTRACT(MONTH FROM sale_date) as month,
     AVG(total_sale) as avg_sale,
     RANK() OVER(PARTITION BY EXTRACT(YEAR FROM sale_date) ORDER BY AVG(total_sale) DESC) as rank
-FROM retail_sales
+FROM retail01
 GROUP BY 1, 2
 ) as t1
 WHERE rank = 1
@@ -152,7 +146,7 @@ WHERE rank = 1
 SELECT 
     customer_id,
     SUM(total_sale) as total_sales
-FROM retail_sales
+FROM retail01
 GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 5
@@ -163,7 +157,7 @@ LIMIT 5
 SELECT 
     category,    
     COUNT(DISTINCT customer_id) as cnt_unique_cs
-FROM retail_sales
+FROM retail01
 GROUP BY category
 ```
 
@@ -178,7 +172,7 @@ SELECT *,
         WHEN EXTRACT(HOUR FROM sale_time) BETWEEN 12 AND 17 THEN 'Afternoon'
         ELSE 'Evening'
     END as shift
-FROM retail_sales
+FROM retail01
 )
 SELECT 
     shift,
@@ -189,36 +183,19 @@ GROUP BY shift
 
 ## Findings
 
-- **Customer Demographics**: The dataset includes customers from various age groups, with sales distributed across different categories such as Clothing and Beauty.
-- **High-Value Transactions**: Several transactions had a total sale amount greater than 1000, indicating premium purchases.
-- **Sales Trends**: Monthly analysis shows variations in sales, helping identify peak seasons.
-- **Customer Insights**: The analysis identifies the top-spending customers and the most popular product categories.
+- **Customer Demographics**: The dataset encompasses a diverse range of customers spanning multiple age groups, with sales reflected across various categories 
+                             like Clothing and Beauty.
+- **High-Value Transactions**: Numerous transactions recorded total sales exceeding 1000, signifying high-end purchases.
+- **Sales Trends**: Analyzing sales every month reveals fluctuations, assisting in recognizing peak shopping seasons.
+- **Customer Insights**: The analysis highlights the highest-spending customers along with the most sought-after product categories.
 
 ## Reports
 
-- **Sales Summary**: A detailed report summarizing total sales, customer demographics, and category performance.
-- **Trend Analysis**: Insights into sales trends across different months and shifts.
-- **Customer Insights**: Reports on top customers and unique customer counts per category.
-
-## Conclusion
-
-This project serves as a comprehensive introduction to SQL for data analysts, covering database setup, data cleaning, exploratory data analysis, and business-driven SQL queries. The findings from this project can help drive business decisions by understanding sales patterns, customer behavior, and product performance.
-
-## How to Use
-
-1. **Clone the Repository**: Clone this project repository from GitHub.
-2. **Set Up the Database**: Run the SQL scripts provided in the `database_setup.sql` file to create and populate the database.
-3. **Run the Queries**: Use the SQL queries provided in the `analysis_queries.sql` file to perform your analysis.
-4. **Explore and Modify**: Feel free to modify the queries to explore different aspects of the dataset or answer additional business questions.
-
-## Author - Zero Analyst
-
-This project is part of my portfolio, showcasing the SQL skills essential for data analyst roles. If you have any questions, feedback, or would like to collaborate, feel free to get in touch!
-
-### Stay Updated and Join the Community
-
-For more content on SQL, data analysis, and other data-related topics, make sure to follow me on social media and join our community:
-
+- **Sales Summary**: An in-depth report that provides an overview of total sales, demographic information about customers, and performance across different 
+                     product categories.
+- **Trend Analysis**: An in-depth report that provides an overview of total sales, demographic information about customers, and performance across different 
+                      product categories.
+- **Customer Insights**: Reports focusing on identifying the top customers and counting unique customers in each category.
 - **YouTube**: [Subscribe to my channel for tutorials and insights](https://www.youtube.com/@zero_analyst)
 - **Instagram**: [Follow me for daily tips and updates](https://www.instagram.com/zero_analyst/)
 - **LinkedIn**: [Connect with me professionally](https://www.linkedin.com/in/najirr)
