@@ -3,6 +3,7 @@
 ## Project Overview
 
 **Project Title**: Retail Sales
+
 **Database**: `retail_db`
 
 I’m working on a project highlighting SQL expertise by tackling retail data. The objective is to set up a sales database, explore the data through EDA, and clean it as needed. I’ll write SQL queries to analyze trends, answer specific business-related questions, and provide insights to improve decision-making. This project will help showcase my ability to work with complex datasets and extract meaningful insights using SQL.
@@ -196,9 +197,3 @@ GROUP BY shift
 - **Trend Analysis**: An in-depth report that provides an overview of total sales, demographic information about customers, and performance across different 
                       product categories.
 - **Customer Insights**: Reports focusing on identifying the top customers and counting unique customers in each category.
-- **YouTube**: [Subscribe to my channel for tutorials and insights](https://www.youtube.com/@zero_analyst)
-- **Instagram**: [Follow me for daily tips and updates](https://www.instagram.com/zero_analyst/)
-- **LinkedIn**: [Connect with me professionally](https://www.linkedin.com/in/najirr)
-- **Discord**: [Join our community to learn and grow together](https://discord.gg/36h5f2Z5PK)
-
-Thank you for your support, and I look forward to connecting with you!
